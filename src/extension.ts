@@ -3,8 +3,8 @@ import { ServerOptions, LanguageClientOptions, RevealOutputChannelOn, LanguageCl
 import * as process from 'child_process';
 import * as net from 'net';
 
-const outputChannel = vscode.window.createOutputChannel(
-	"VSCode AS"
+const out = vscode.window.createOutputChannel(
+  "VSCode AssemblyScript"
 );
 
 const ID = "vscode-as";
@@ -12,36 +12,32 @@ const NAME = "AssemblyScript Language Client";
 
 export function activate(context: vscode.ExtensionContext) {
   // --- TODO: Default to global asls installation when ready
-	const command = context.asAbsolutePath('./asls');
-	const serverOptions: ServerOptions = run(command);
-	let clientOptions: LanguageClientOptions = {
-		documentSelector: [
-			{ language: "ts", scheme: "file" },
-			{ language: "asc", scheme: "file" },
-		],
-		revealOutputChannelOn: RevealOutputChannelOn.Never,
-		synchronize: {
-			configurationSection: "vscode-as",
-			fileEvents: [
-				vscode.workspace.createFileSystemWatcher("assembly/**/*.asc"),
-				vscode.workspace.createFileSystemWatcher("assembly/**/*.ts"),
-				vscode.workspace.createFileSystemWatcher("package.json"),
-			]
-		}
-	};
+  const command = context.asAbsolutePath('./asls');
+  const serverOptions: ServerOptions = run(command);
+  let clientOptions: LanguageClientOptions = {
+    documentSelector: [
+      { language: "assemblyscript", scheme: "file" },
+    ],
+    outputChannel: out,
+    revealOutputChannelOn: RevealOutputChannelOn.Never,
+    synchronize: {
+      configurationSection: "vscode-as",
+      fileEvents: [
+        vscode.workspace.createFileSystemWatcher("assembly/**/*.asc"),
+        vscode.workspace.createFileSystemWatcher("assembly/**/*.ts"),
+        vscode.workspace.createFileSystemWatcher("package.json"),
+      ]
+    },
+  };
 
 
-	let disposable = new LanguageClient(
-    ID,
-    NAME,
-		serverOptions,
-		clientOptions
-	).start();
+  let disposable =
+    new LanguageClient(ID, NAME, serverOptions, clientOptions).start();
 
-	outputChannel.appendLine("Client started");
-  outputChannel.show(true);
+  out.appendLine("Client started");
+  out.show(true);
 
-	context.subscriptions.push(disposable);
+  context.subscriptions.push(disposable);
 }
 
 // --- TODO: Get an available port from  the OS
@@ -50,19 +46,19 @@ export function activate(context: vscode.ExtensionContext) {
 // --- 7658 is the default port of the 
 // --- language server.
 function run(command: String): ServerOptions {
-	return () => {
-		return new Promise((resolve, _reject) => {
-			// const p = process.spawn(command, ['-p', PORT]);
-			const socket = net.createConnection({port: 7658}, () => {
-				outputChannel.appendLine('Connection established');
-				outputChannel.show(true);
-			});
-			resolve({
-				reader: socket,
-				writer: socket
-			});
-		});
-	};
+  return () => {
+    return new Promise((resolve, _reject) => {
+      // const p = process.spawn(command, ['-p', PORT]);
+      const socket = net.createConnection({port: 7658}, () => {
+        out.appendLine('Connection established');
+        out.show(true);
+      });
+      resolve({
+        reader: socket,
+        writer: socket
+      });
+    });
+  };
 }
 
 export function deactivate() {}
