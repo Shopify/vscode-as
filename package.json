@@ -7,8 +7,7 @@
     "vscode": "^1.45.0"
   },
   "activationEvents": [
-    "onLanguage:assemblyscript",
-    "onLanguage:typescript"
+    "onLanguage:assemblyscript"
   ],
   "main": "./out/extension.js",
 
@@ -33,22 +32,30 @@
           "description": "Traces the communication between VSCode and the assemblyScriptLanguageServer service."
         }
       }
-    }
-  },
+    },
+    
+    "languages": [
+      {
+        "id": "assemblyscript",
+        "aliases": [
+          "AssemblyScript",
+          "assemblyscript"
+        ],
+        "extensions": [
+          ".asc"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
 
-  "languages": [
-    {
-      "id": "assemblyscript",
-      "aliases": [
-        "AssemblyScript",
-        "assemblyscript"
-      ],
-      "extensions": [
-        "asc"
-      ],
-      "configuration": "./language-configuration.json"
-    }
-  ],
+    "grammars": [
+      {
+        "language": "assemblyscript",
+        "scopeName": "source.asc",
+        "path": "./syntaxes/assemblyscript.json"
+      }
+    ]
+  },
 
   "scripts": {
     "vscode:prepublish": "npm run compile",
