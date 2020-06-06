@@ -24,7 +24,6 @@ export function activate(context: vscode.ExtensionContext) {
       configurationSection: "vscode-as",
       fileEvents: [
         vscode.workspace.createFileSystemWatcher("assembly/**/*.asc"),
-        vscode.workspace.createFileSystemWatcher("assembly/**/*.ts"),
         vscode.workspace.createFileSystemWatcher("package.json"),
       ]
     },
