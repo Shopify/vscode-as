@@ -2,7 +2,7 @@
   "name": "vscode-as",
   "displayName": "vscode-as",
   "description": "",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.45.0"
   },
@@ -10,6 +10,8 @@
     "onLanguage:assemblyscript"
   ],
   "main": "./out/extension.js",
+  "publisher": "saulecabrera",
+  "repository": "https://github.com/saulecabrera/as-vscode",
 
   "contributes": {
     "configuration": {
