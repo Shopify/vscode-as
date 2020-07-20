@@ -1,7 +1,7 @@
 {
-  "name": "vscode-as",
-  "displayName": "vscode-as",
-  "description": "",
+  "name": "asls",
+  "displayName": "AssemblyScript for VSCode",
+  "description": "AssemblyScript Language Client implementation for VSCode",
   "version": "0.1.0",
   "engines": {
     "vscode": "^1.45.0"
