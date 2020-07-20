@@ -2,26 +2,37 @@ import * as vscode from 'vscode';
 import { ServerOptions, LanguageClientOptions, RevealOutputChannelOn, LanguageClient } from 'vscode-languageclient';
 import * as process from 'child_process';
 import * as net from 'net';
+import { Logger } from './logger';
 
-const out = vscode.window.createOutputChannel(
-  "VSCode AssemblyScript"
-);
+const ID = 'vscode-as';
+const NAME = 'AssemblyScript Language Client';
+const COMMAND = 'asls';
+const DEFAULT_PORT = 7658;
+const ARGS = ['-p', DEFAULT_PORT.toString()];
+const logger = Logger.fromOutputChannel();
 
-const ID = "vscode-as";
-const NAME = "AssemblyScript Language Client";
+const makeError = (e?: string) => `
+  AssemblyScript Language Server not started.
+  Make sure that the CLI for the language server
+  is correctly installed.
+
+  Installation instructions can be found at: 
+
+  https://github.com/saulecabrera/asls.
+  
+  The server returned:
+  ${e}
+`;
 
 export function activate(context: vscode.ExtensionContext) {
-  // --- TODO: Default to global asls installation when ready
-  const command = context.asAbsolutePath('./asls');
-  const serverOptions: ServerOptions = run(command);
   let clientOptions: LanguageClientOptions = {
     documentSelector: [
       { language: "assemblyscript", scheme: "file" },
     ],
-    outputChannel: out,
+    outputChannel: logger.channel,
     revealOutputChannelOn: RevealOutputChannelOn.Never,
     synchronize: {
-      configurationSection: "vscode-as",
+      configurationSection: ID,
       fileEvents: [
         vscode.workspace.createFileSystemWatcher("assembly/**/*.asc"),
         vscode.workspace.createFileSystemWatcher("package.json"),
@@ -29,35 +40,54 @@ export function activate(context: vscode.ExtensionContext) {
     },
   };
 
-
   let disposable =
-    new LanguageClient(ID, NAME, serverOptions, clientOptions).start();
+    new LanguageClient(ID, NAME, run(COMMAND, ARGS), clientOptions)
+    .start();
 
-  out.appendLine("Client started");
-  out.show(true);
-
+  logger.debug('Client started');
   context.subscriptions.push(disposable);
 }
 
-// --- TODO: Get an available port from  the OS
-// --- The current setup is temporary, only for 
-// --- development. 
-// --- 7658 is the default port of the 
-// --- language server.
-function run(command: String): ServerOptions {
-  return () => {
-    return new Promise((resolve, _reject) => {
-      // const p = process.spawn(command, ['-p', PORT]);
-      const socket = net.createConnection({port: 7658}, () => {
-        out.appendLine('Connection established');
-        out.show(true);
-      });
-      resolve({
-        reader: socket,
-        writer: socket
-      });
+const spawn = (command: string, args: string[]): Promise<void> => new Promise((resolve, reject) => {
+  const proc = process.spawn(command, args, {
+    shell: true,
+  });
+
+  proc.stderr.on('data', (data) => {
+    reject(makeError((data && data.toString())));
+  });
+
+  proc.stdout.on('data', (data) => {
+    logger.debug(data.toString());
+    resolve();
+  });
+
+  proc.on('error', (err) => {
+    reject(makeError(err.toString()));
+  });
+});
+
+const connect = (port: number): Promise<net.Socket> => new Promise((resolve, reject) => {
+  const socket: net.Socket = net.createConnection({ port }, () => {
+    logger.debug('Connection established.');
+    resolve(socket);
+  });
+
+  socket.on('error', (err) => {
+    reject(makeError(err.message.toString()));
+  });
+});
+
+const run = (command: string, args: string[]): ServerOptions => () => new Promise((resolve,  _reject)  => {
+  spawn(command, args)
+    .then(() => connect(DEFAULT_PORT))
+    .then((socket) => resolve({
+      writer: socket,
+      reader: socket,
+    }))
+    .catch(error => {
+      logger.error(error);
     });
-  };
-}
+});
 
 export function deactivate() {}
