@@ -1,15 +1,24 @@
 import * as vscode from 'vscode';
-import { ServerOptions, LanguageClientOptions, RevealOutputChannelOn, LanguageClient } from 'vscode-languageclient';
+import {
+  ServerOptions,
+  LanguageClientOptions,
+  RevealOutputChannelOn,
+  LanguageClient
+} from 'vscode-languageclient';
 import * as process from 'child_process';
 import * as net from 'net';
-import { Logger } from './logger';
+
+import * as Logger from './Logger';
+import * as Command from './Command';
 
 const ID = 'vscode-as';
 const NAME = 'AssemblyScript Language Client';
-const COMMAND = 'asls';
 const DEFAULT_PORT = 7658;
 const ARGS = ['-p', DEFAULT_PORT.toString()];
-const logger = Logger.fromOutputChannel();
+
+const logger = Logger.fromOutputChannel(
+  vscode.window.createOutputChannel(NAME)
+);
 
 const makeError = (e?: string) => `
   AssemblyScript Language Server not started.
@@ -28,20 +37,23 @@ export function activate(context: vscode.ExtensionContext) {
   let clientOptions: LanguageClientOptions = {
     documentSelector: [
       { language: "assemblyscript", scheme: "file" },
+      { language: "typescript", scheme: "file" },
     ],
     outputChannel: logger.channel,
     revealOutputChannelOn: RevealOutputChannelOn.Never,
+    diagnosticCollectionName: ID,
     synchronize: {
       configurationSection: ID,
       fileEvents: [
-        vscode.workspace.createFileSystemWatcher("assembly/**/*.asc"),
+        vscode.workspace.createFileSystemWatcher("assembly/**/*.as"),
+        vscode.workspace.createFileSystemWatcher("assembly/**/*.ts"),
         vscode.workspace.createFileSystemWatcher("package.json"),
-      ]
+      ], 
     },
   };
 
   let disposable =
-    new LanguageClient(ID, NAME, run(COMMAND, ARGS), clientOptions)
+    new LanguageClient(ID, NAME, run(Command.fromContext(context), ARGS), clientOptions)
     .start();
 
   logger.debug('Client started');
@@ -65,6 +77,8 @@ const spawn = (command: string, args: string[]): Promise<void> => new Promise((r
   proc.on('error', (err) => {
     reject(makeError(err.toString()));
   });
+
+  proc.on('exit', () => proc.kill());
 });
 
 const connect = (port: number): Promise<net.Socket> => new Promise((resolve, reject) => {
