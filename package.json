@@ -7,12 +7,12 @@
     "vscode": "^1.45.0"
   },
   "activationEvents": [
+    "onLanguage:typescript",
     "onLanguage:assemblyscript"
   ],
   "main": "./out/extension.js",
   "publisher": "saulecabrera",
   "repository": "https://github.com/saulecabrera/as-vscode",
-
   "contributes": {
     "configuration": {
       "type": "object",
@@ -35,7 +35,6 @@
         }
       }
     },
-    
     "languages": [
       {
         "id": "assemblyscript",
@@ -44,21 +43,19 @@
           "assemblyscript"
         ],
         "extensions": [
-          ".asc"
+          ".as"
         ],
         "configuration": "./language-configuration.json"
       }
     ],
-
     "grammars": [
       {
         "language": "assemblyscript",
-        "scopeName": "source.asc",
+        "scopeName": "source.as",
         "path": "./syntaxes/assemblyscript.json"
       }
     ]
   },
-
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
@@ -68,16 +65,16 @@
     "test": "node ./out/test/runTest.js"
   },
   "devDependencies": {
-    "@types/vscode": "^1.45.0",
-    "@types/glob": "^7.1.1",
+    "@types/glob": "^7.1.3",
     "@types/mocha": "^7.0.2",
-    "@types/node": "^13.11.0",
-    "eslint": "^6.8.0",
-    "@typescript-eslint/parser": "^2.30.0",
+    "@types/node": "^13.13.15",
+    "@types/vscode": "^1.47.0",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
+    "@typescript-eslint/parser": "^2.30.0",
+    "eslint": "^6.8.0",
     "glob": "^7.1.6",
     "mocha": "^7.1.2",
-    "typescript": "^3.8.3",
+    "typescript": "^3.9.7",
     "vscode-test": "^1.3.0"
   },
   "dependencies": {
