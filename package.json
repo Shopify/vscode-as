@@ -3,6 +3,7 @@
   "displayName": "AssemblyScript for VSCode",
   "description": "AssemblyScript Language Client implementation for VSCode",
   "version": "0.2.0",
+  "icon": "aslogo.png",
   "engines": {
     "vscode": "^1.47.3"
   },
