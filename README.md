@@ -9,7 +9,7 @@ VSCode Language Client for AssemblyScript
 
 ## Usage
 
-To install the AssemblyScript Language Server make sure you follow the [installation instructions](https).
+To install the AssemblyScript Language Server make sure you follow the [installation instructions](https://github.com/saulecabrera/asls#installation).
 
 The AssemblyScript compiler supports parametrized source file extensions, this means that as long as
 all your source files have the same extension you can instruct the compiler to use it.
