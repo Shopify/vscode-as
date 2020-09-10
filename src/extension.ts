@@ -95,7 +95,7 @@ const connect = (port: number): Promise<Either<string, net.Socket>> => new Promi
   });
 });
 
-const run = (context: vscode.ExtensionContext, args: string[]): ServerOptions => () => new Promise((resolve,  reject) =>
+const run = (context: vscode.ExtensionContext, args: string[]): ServerOptions => () => new Promise((resolve,  _reject) =>
   Runtime.ensure(context)
     .chain((cmd) => EitherAsync.fromPromise(() => spawn(cmd, args))) 
     .chain((port) => EitherAsync.fromPromise(() => connect(port)))
