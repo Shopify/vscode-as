@@ -8,7 +8,7 @@ import {
 import * as process from 'child_process';
 import * as net from 'net';
 
-import * as Logger from './Logger';
+import * as Logger from './Log';
 import * as Runtime from './Runtime';
 import { Either, Right, Left } from 'purify-ts/Either';
 import { EitherAsync } from 'purify-ts/EitherAsync';
