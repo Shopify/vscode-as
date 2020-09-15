@@ -2,7 +2,7 @@
   "name": "asls",
   "displayName": "AssemblyScript for VSCode",
   "description": "AssemblyScript Language Client implementation for VSCode",
-  "version": "0.2.2",
+  "version": "0.3.0",
   "icon": "as.png",
   "galleryBanner": {
     "color": "#0DA2FF",
