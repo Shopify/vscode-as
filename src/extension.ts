@@ -8,13 +8,14 @@ import {
 import * as process from 'child_process';
 import * as net from 'net';
 
-import * as Logger from './Logger';
+import * as Logger from './Log';
 import * as Runtime from './Runtime';
 import { Either, Right, Left } from 'purify-ts/Either';
 import { EitherAsync } from 'purify-ts/EitherAsync';
 
 const ID = 'vscode-as';
 const NAME = 'AssemblyScript Language Client';
+const TARGET_COMMAND = 'asls';
 // Passing 0 will result in dynamic port assigment
 const DEFAULT_PORT = 0;
 const ARGS = ['-p', DEFAULT_PORT.toString()];
@@ -96,7 +97,7 @@ const connect = (port: number): Promise<Either<string, net.Socket>> => new Promi
 });
 
 const run = (context: vscode.ExtensionContext, args: string[]): ServerOptions => () => new Promise((resolve,  _reject) =>
-  Runtime.ensure(context)
+  Runtime.ensure(TARGET_COMMAND, context)
     .chain((cmd) => EitherAsync.fromPromise(() => spawn(cmd, args))) 
     .chain((port) => EitherAsync.fromPromise(() => connect(port)))
     .run().then(either =>

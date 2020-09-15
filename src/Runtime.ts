@@ -20,12 +20,12 @@ const exec = (command: string): Promise<Either<string, string>> => new Promise((
 
 const version = (cmd: string) => exec(`${cmd} --version`);
 
-const ensureServer = (context: vscode.ExtensionContext): Either<string, string> =>
+const ensureServer = (cmd: string, context: vscode.ExtensionContext): Either<string, string> =>
   Command
-    .fromContext(context)
+    .fromContext(cmd, context)
     .toEither(`
       AssemblyScript Language Server (asls) not found.
-      Plase make sure that the CLI for the language server is correctly installed.
+      Please make sure that the CLI for the language server is correctly installed.
 
       Installation instructions can be found at: https://github.com/saulecabrera/asls
       `);
@@ -54,9 +54,9 @@ const ensureServerVersion = (version: string): Either<string, boolean> => {
  *
  * @returns EitherAsync<string, string>
  */
-export const ensure = (context: vscode.ExtensionContext): EitherAsync<string, string> =>
+export const ensure = (cmd: string, context: vscode.ExtensionContext): EitherAsync<string, string> =>
   EitherAsync
-    .liftEither(ensureServer(context))
+    .liftEither(ensureServer(cmd, context))
     .chain(cmd => EitherAsync.fromPromise(() => version(cmd)))
     .chain(vsn => EitherAsync.liftEither(ensureServerVersion(vsn)))
-    .map(_ => Command.fromContext(context).unsafeCoerce());
+    .map(_ => Command.fromContext(cmd, context).unsafeCoerce());

@@ -13,18 +13,19 @@ export type Command = string;
  * If the extension is on production mode, the global binary path
  * will be returned.
  *
+ * @param cmd - the command to resolve
  * @param ctx - the extension context
  * @returns the language server command
  */
-export const fromContext = (ctx: vscode.ExtensionContext): Maybe<Command> => {
+export const fromContext = (cmd: string, ctx: vscode.ExtensionContext): Maybe<Command> => {
   const fallback = Maybe
-    .fromNullable(shell.which('asls'))
+    .fromNullable(shell.which(cmd))
     .map(cmd => cmd.toString());
 
   switch(ctx.extensionMode) {
     case vscode.ExtensionMode.Development:
       return Maybe
-        .fromNullable(shell.which(ctx.asAbsolutePath('asls')))
+        .fromNullable(shell.which(ctx.asAbsolutePath(cmd)))
         .map(cmd => cmd.toString())
         .alt(fallback);
     default:
