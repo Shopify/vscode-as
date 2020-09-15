@@ -6,11 +6,13 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+## [0.3.0] - 2020-09-15
+
 ### Added
 
 - [Runtime] - Added a runtime module to ensure runtime dependencies are met
 - [Extension] - Dynamic port assignment
 - [Command] - Dynamic command derivation, the fallback is always the system installation of the language server
 - [Extension] - Log which command is the server started from
-
+- **Note:** this version, requires the AssemblyScript Language Server version to be at least v0.5.0
 
