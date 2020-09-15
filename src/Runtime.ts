@@ -25,7 +25,7 @@ const ensureServer = (cmd: string, context: vscode.ExtensionContext): Either<str
     .fromContext(cmd, context)
     .toEither(`
       AssemblyScript Language Server (asls) not found.
-      Plase make sure that the CLI for the language server is correctly installed.
+      Please make sure that the CLI for the language server is correctly installed.
 
       Installation instructions can be found at: https://github.com/saulecabrera/asls
       `);
