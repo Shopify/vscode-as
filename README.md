@@ -43,3 +43,10 @@ This plugin accepts either `as` or `ts` as file extensions.
 Note: using an extension different than `ts` might cause weird behaviors when using third party libraries that don't use the
 same file extension.
 
+## Troubleshooting
+
+- Some versions of the this extension will require a minimum language server server version,
+  please make sure your language server version is compliant. 
+
+- Versions 0.3.0 to 0.3.2 _do not work_. Please update to a version that's equal or greater to 0.3.3
+
