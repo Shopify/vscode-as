@@ -32,10 +32,11 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
-      - name: Environment
+      - name: Env
         run: |
           node -v
           npm -v
+
       - name: Install
         run: npm i
 
