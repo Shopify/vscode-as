@@ -1,6 +1,6 @@
 import { ExtensionMode } from 'vscode';
 import * as Command from './Command';
-import { context, asAbsolutePath } from '../__mocks__/vscode';
+import { context, asAbsolutePath } from './__mocks__/vscode';
 
 describe('Command', () => {
   describe('fromContext (development mode)', () => {
