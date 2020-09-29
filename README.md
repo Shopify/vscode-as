@@ -1,6 +1,6 @@
 # AssemblyScript for VSCode
 
-![Build](https://github.com/saulecabrera/as-vscode/workflows/Build/badge.svg)
+![Build](https://github.com/saulecabrera/vscode-as/workflows/Build/badge.svg)
 
 
 VSCode Language Client for AssemblyScript
