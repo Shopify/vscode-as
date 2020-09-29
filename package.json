@@ -17,7 +17,7 @@
   ],
   "main": "./out/extension.js",
   "publisher": "saulecabrera",
-  "repository": "https://github.com/saulecabrera/as-vscode",
+  "repository": "https://github.com/saulecabrera/vscode-as",
   "contributes": {
     "configuration": {
       "type": "object",
