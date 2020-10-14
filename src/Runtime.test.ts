@@ -26,6 +26,8 @@ describe('Runtime', () => {
         The currrent version is 0.4.2.
         The current version of the language client requires v0.5.0.
         Please update the AssemblyScript Language Server.
+
+        Update instructions can be found at: https://github.com/saulecabrera/asls#installation
           `.replace(/ /g, ''));
       });
     });
