@@ -6,6 +6,8 @@ Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how 
 
 ## [Unreleased]
 
+- [Runtime] - Improve unmet dependencies error
+
 ## [0.3.3] - 2020-09-15
 
 ### Added

@@ -40,6 +40,8 @@ const ensureServerVersion = (version: string): Either<string, boolean> => {
     The currrent version is ${current}.
     The current version of the language client requires v${MINIMUM_SERVER_VERSION}.
     Please update the AssemblyScript Language Server.
+
+    Update instructions can be found at: https://github.com/saulecabrera/asls#installation
     `);
 };
 
