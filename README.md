@@ -58,7 +58,7 @@ server, you need to:
 1. Symlink the language server binary into this directory `ln -s
    path/to/language/server/bin/asls asls`
 
-2. Run `npm install` and `npm compile`
+2. Run `npm install` and `npm run compile`
 
 3. Make sure to have Erlang 22+ installed, if you're using nix you can do so by
    running `nix-env -iA nixpkgs.erlang`
