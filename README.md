@@ -50,3 +50,35 @@ same file extension.
 
 - Versions 0.3.0 to 0.3.2 _do not work_. Please update to a version that's equal or greater to 0.3.3
 
+## Development
+
+If you want to develop the extension using a development version of the language
+server, you need to:
+
+1. Symlink the language server binary into this directory `ln -s
+   path/to/language/server/bin/asls asls`
+
+2. Run `npm install` and `npm compile`
+
+3. Make sure to have Erlang 22+ installed, if you're using nix you can do so by
+   running `nix-env -iA nixpkgs.erlang`
+
+4. Under the debug section in VSCode click on `Run extension`
+
+5. Once the extension is runing, in VSCode's output console, verify that the
+   logs specify that the language server was started from the relative symlink,
+   it looks something like:
+
+   ```
+   Starting the AssemblyScript Language Server from: /path/to/extension/vscode-as/asls
+   ```
+
+If you want to develop the extension using a global installation of the
+language server, the steps are almost the same, except that you can skip step
+1; and in step 5 instead of verifying that the language server is started from
+the relative symlink, ensure that it is started from the global installation
+path.
+
+It's important to note that if the extension is in development mode and in the case that both the symlink and the global
+installation are present, the symlink will take precedence over the global
+installation.
