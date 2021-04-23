@@ -17,18 +17,18 @@
   ],
   "main": "./out/extension.js",
   "publisher": "saulecabrera",
-  "repository": "https://github.com/saulecabrera/vscode-as",
+  "repository": "https://github.com/Shopify/vscode-as",
   "contributes": {
     "configuration": {
       "type": "object",
-      "title": "VSCode AssemblyScript Configuration",
+      "title": "AssemblyScript",
       "properties": {
-        "vscode-as.maxNumberOfProblems": {
+        "asls.maxNumberOfProblems": {
           "type": "number",
           "default": 100,
           "description": "Controls the maximum number of problems produced by the server."
         },
-        "vscode-as.traceLevel": {
+        "asls.traceLevel": {
           "type": "string",
           "enum": [
             "off",
@@ -36,7 +36,27 @@
             "verbose"
           ],
           "default": "on",
-          "description": "Traces the communication between VSCode and the assemblyScriptLanguageServer service."
+          "description": "Traces the communication between VSCode and the AssemblyScript language server"
+        },
+        "asls.root": {
+          "description": "Directory to be considered as the root of the AssemblyScript sources",
+          "type": "string",
+          "default": "assembly/**/*.{as,ts}"
+        },
+        "asls.port": {
+          "description": "Port in which the language server will be listening",
+          "type": "number",
+          "default": 0
+        },
+        "asls.executable": {
+          "description": "The language server executable",
+          "type": "string",
+          "default": "asls"
+        },
+        "asls.debug": {
+          "description": "Start the language server in debug mode",
+          "type": "boolean",
+          "default": false
         }
       }
     },

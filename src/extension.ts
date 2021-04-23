@@ -10,18 +10,14 @@ import * as net from 'net';
 
 import * as Logger from './Log';
 import * as Runtime from './Runtime';
+import * as Config from './Config';
 import { Either, Right, Left } from 'purify-ts/Either';
 import { EitherAsync } from 'purify-ts/EitherAsync';
 
-const ID = 'vscode-as';
-const NAME = 'AssemblyScript Language Client';
-const TARGET_COMMAND = 'asls';
-// Passing 0 will result in dynamic port assigment
-const DEFAULT_PORT = 0;
-const ARGS = ['-p', DEFAULT_PORT.toString()];
+const config = Config.fromEntry();
 
 const logger = Logger.fromOutputChannel(
-  vscode.window.createOutputChannel(NAME)
+  vscode.window.createOutputChannel(config.name)
 );
 
 const makeError = (e?: string) => `
@@ -35,23 +31,23 @@ export function activate(context: vscode.ExtensionContext) {
   let clientOptions: LanguageClientOptions = {
     documentSelector: [
       { language: "assemblyscript", scheme: "file" },
+      { language: "assemblyscript", scheme: "untitled" },
       { language: "typescript", scheme: "file" },
+      { language: "typescript", scheme: "untitled" },
     ],
     outputChannel: logger.channel,
     revealOutputChannelOn: RevealOutputChannelOn.Never,
-    diagnosticCollectionName: ID,
+    diagnosticCollectionName: config.id,
     synchronize: {
-      configurationSection: ID,
+      configurationSection: config.id,
       fileEvents: [
-        vscode.workspace.createFileSystemWatcher("assembly/**/*.as"),
-        vscode.workspace.createFileSystemWatcher("assembly/**/*.ts"),
-        vscode.workspace.createFileSystemWatcher("package.json"),
-      ], 
+        vscode.workspace.createFileSystemWatcher(config.root),
+      ],
     },
   };
 
   let disposable =
-    new LanguageClient(ID, NAME, run(context, ARGS), clientOptions)
+    new LanguageClient(config.id, config.name, run(context, Config.toArgs(config)), clientOptions)
     .start();
 
   logger.debug('Client started');
@@ -97,7 +93,7 @@ const connect = (port: number): Promise<Either<string, net.Socket>> => new Promi
 });
 
 const run = (context: vscode.ExtensionContext, args: string[]): ServerOptions => () => new Promise((resolve,  _reject) =>
-  Runtime.ensure(TARGET_COMMAND, context)
+  Runtime.ensure(config.command, context)
     .chain((cmd) => EitherAsync.fromPromise(() => spawn(cmd, args))) 
     .chain((port) => EitherAsync.fromPromise(() => connect(port)))
     .run().then(either =>
