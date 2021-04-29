@@ -2,9 +2,9 @@ import * as ts from 'typescript/lib/tsserverlibrary';
 import * as mm from 'minimatch';
 import * as path from 'path';
 
-let defaultConfig = {include: "assembly/**/*.ts", rootPath: ''};
+let defaultConfig = { include: "assembly/**/*.ts", rootPath: '' };
 
-const create = ({languageService}: ts.server.PluginCreateInfo): ts.LanguageService => ({
+const create = ({ languageService }: ts.server.PluginCreateInfo): ts.LanguageService => ({
   ...languageService,
   getCompilerOptionsDiagnostics: () => [],
   getSyntacticDiagnostics: filter(languageService, "getSyntacticDiagnostics"),

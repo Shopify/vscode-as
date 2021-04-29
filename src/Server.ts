@@ -36,7 +36,7 @@ const spawn = ({ logger, command }: Server, args: string[]): Promise<Either<stri
   proc.on('exit', () => proc.kill());
 });
 
-const connect = ({logger}: Server, port: number): Promise<Either<string, net.Socket>> => new Promise((resolve, reject) => {
+const connect = ({ logger }: Server, port: number): Promise<Either<string, net.Socket>> => new Promise((resolve, reject) => {
   const socket: net.Socket = net.createConnection({ port }, () => {
     logger.debug('Connection established.');
     resolve(Right(socket));
@@ -62,4 +62,4 @@ const err = (msg?: string): string => `
 export const start = (server: Server, args: string[]): EitherAsync<string, net.Socket> =>
   EitherAsync
     .fromPromise(() => spawn(server, args))
-    .chain(port => EitherAsync.fromPromise(() => connect(server, port)))
+    .chain(port => EitherAsync.fromPromise(() => connect(server, port)));

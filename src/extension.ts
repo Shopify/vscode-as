@@ -11,7 +11,7 @@ import * as Runtime from './Runtime';
 import * as Config from './Config';
 import * as Plugin from './Plugin';
 import * as Server from './Server';
-import {EitherAsync} from 'purify-ts/EitherAsync';
+import { EitherAsync } from 'purify-ts/EitherAsync';
 
 const config = Config.fromEntry();
 
@@ -52,7 +52,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 const run = (context: vscode.ExtensionContext, args: string[]): ServerOptions => () => new Promise((resolve,  _reject) =>
   Runtime.ensure(config.command, context)
-    .chain(cmd => Server.start({command: cmd, logger}, args))
+    .chain(cmd => Server.start({ command: cmd, logger }, args))
     .chain(sock => EitherAsync(async () => resolve({
       writer: sock,
       reader: sock,
@@ -60,7 +60,7 @@ const run = (context: vscode.ExtensionContext, args: string[]): ServerOptions =>
     .chain(() => Plugin.activate(config))
     .run().then((either) => {
       either
-        .ifLeft(e => logger.error(e))
+        .ifLeft(e => logger.error(e));
     }));
 
 export function deactivate() {}
