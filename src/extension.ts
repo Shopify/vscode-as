@@ -36,7 +36,7 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.workspace.createFileSystemWatcher(
           new vscode.RelativePattern(
             vscode.workspace.workspaceFolders![0],
-            'assembly/**/*.ts'
+            config.include,
           )
         )
       ],
