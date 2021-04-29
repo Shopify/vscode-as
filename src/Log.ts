@@ -14,7 +14,7 @@ export interface Logger<C> {
  * @param channel - the vscode output channel
  * @returns Logger
  */
-export const fromOutputChannel = (channel: vscode.OutputChannel): Logger<vscode.OutputChannel> => ({
+export const fromOutputChannel = (channel: vscode.OutputChannel): VSCodeLogger => ({
   error: (msg: string) => {
     vscode.window.showErrorMessage(msg);
   },
