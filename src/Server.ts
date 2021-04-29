@@ -1,15 +1,15 @@
 import * as process from 'child_process';
 import * as net from 'net';
 import * as Logger from './Log';
-import {Either, Right, Left} from 'purify-ts/Either';
-import {EitherAsync} from 'purify-ts/EitherAsync';
+import { Either, Right, Left } from 'purify-ts/Either';
+import { EitherAsync } from 'purify-ts/EitherAsync';
 
 export interface Server {
   logger: Logger.VSCodeLogger,
   command: string,
 }
 
-const spawn = ({logger, command}: Server, args: string[]): Promise<Either<string, number>> => new Promise((resolve, reject) => {
+const spawn = ({ logger, command }: Server, args: string[]): Promise<Either<string, number>> => new Promise((resolve, reject) => {
   logger.debug(`Starting the AssemblyScript Language Server from: ${command}`);
   const proc = process.spawn(command, args, {
     shell: true,
@@ -54,6 +54,11 @@ const err = (msg?: string): string => `
   ${msg}
 `;
 
+/**
+ * Starts the language server by spawning a process and connecting the socket.
+ *
+ * @returns EitherAsync<string, net.Socket>
+ */
 export const start = (server: Server, args: string[]): EitherAsync<string, net.Socket> =>
   EitherAsync
     .fromPromise(() => spawn(server, args))

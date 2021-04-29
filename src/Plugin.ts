@@ -1,5 +1,5 @@
 import { Maybe, Just, Nothing } from 'purify-ts/Maybe';
-import { MaybeAsync } from 'purify-ts/MaybeAsync'
+import { MaybeAsync } from 'purify-ts/MaybeAsync';
 import * as vscode from 'vscode';
 import * as Config from './Config';
 
@@ -40,7 +40,7 @@ const configure = async (extension: TSExtension, config: Config.Config): Promise
   }
 
   return Nothing;
-}
+};
 
 /**
  * Activates the TypeScript Server Plugin named `asts`. This plugin is defined as local package and
