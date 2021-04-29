@@ -4,28 +4,20 @@ import {
   LanguageClientOptions,
   RevealOutputChannelOn,
   LanguageClient
-} from 'vscode-languageclient';
-import * as process from 'child_process';
-import * as net from 'net';
+} from 'vscode-languageclient/node';
 
 import * as Logger from './Log';
 import * as Runtime from './Runtime';
 import * as Config from './Config';
-import { Either, Right, Left } from 'purify-ts/Either';
-import { EitherAsync } from 'purify-ts/EitherAsync';
+import * as Plugin from './Plugin';
+import * as Server from './Server';
+import {EitherAsync} from 'purify-ts/EitherAsync';
 
 const config = Config.fromEntry();
 
 const logger = Logger.fromOutputChannel(
   vscode.window.createOutputChannel(config.name)
 );
-
-const makeError = (e?: string) => `
-  AssemblyScript Language Server not started.
-  The server returned:
-
-  ${e}
-`;
 
 export function activate(context: vscode.ExtensionContext) {
   let clientOptions: LanguageClientOptions = {
@@ -41,70 +33,34 @@ export function activate(context: vscode.ExtensionContext) {
     synchronize: {
       configurationSection: config.id,
       fileEvents: [
-        vscode.workspace.createFileSystemWatcher(config.root),
+        vscode.workspace.createFileSystemWatcher(
+          new vscode.RelativePattern(
+            vscode.workspace.workspaceFolders![0],
+            'assembly/**/*.ts'
+          )
+        )
       ],
     },
   };
 
-  let disposable =
-    new LanguageClient(config.id, config.name, run(context, Config.toArgs(config)), clientOptions)
-    .start();
-
   logger.debug('Client started');
-  context.subscriptions.push(disposable);
+  context.subscriptions.push(
+    new LanguageClient(config.id, config.name, run(context, Config.toArgs(config)), clientOptions).start()
+  );
 }
 
-const spawn = (command: string, args: string[]): Promise<Either<string, number>> => new Promise((resolve, reject) => {
-  logger.debug(`Starting the AssemblyScript Language Server from: ${command}`);
-  const proc = process.spawn(command, args, {
-    shell: true,
-  });
-
-  proc.stderr.on('data', (data) => {
-    reject(Left(makeError((data && data.toString()))));
-  });
-
-  proc.stdout.on('data', (data) => {
-    const log = data.toString();
-    logger.debug(log);
-
-    const match = log.match(/Server listening @ ([0-9]+)/);
-    if (match && match.length > 0) {
-      resolve(Right(parseInt(match[1])));
-    }
-  });
-
-  proc.on('error', (err) => {
-    reject(Left(makeError(err.toString())));
-  });
-
-  proc.on('exit', () => proc.kill());
-});
-
-const connect = (port: number): Promise<Either<string, net.Socket>> => new Promise((resolve, reject) => {
-  const socket: net.Socket = net.createConnection({ port }, () => {
-    logger.debug('Connection established.');
-    resolve(Right(socket));
-  });
-
-  socket.on('error', (err) => {
-    reject(Left(makeError(err.message.toString())));
-  });
-});
 
 const run = (context: vscode.ExtensionContext, args: string[]): ServerOptions => () => new Promise((resolve,  _reject) =>
   Runtime.ensure(config.command, context)
-    .chain((cmd) => EitherAsync.fromPromise(() => spawn(cmd, args))) 
-    .chain((port) => EitherAsync.fromPromise(() => connect(port)))
-    .run().then(either =>
+    .chain(cmd => Server.start({command: cmd, logger}, args))
+    .chain(sock => EitherAsync(async () => resolve({
+      writer: sock,
+      reader: sock,
+    })))
+    .chain(() => Plugin.activate(config))
+    .run().then((either) => {
       either
-      .ifLeft(reason => {
-          logger.error(reason);
-        })
-      .ifRight(socket => resolve({
-          writer: socket,
-          reader: socket,
-        }))
-    ));
+        .ifLeft(e => logger.error(e))
+    }));
 
 export function deactivate() {}

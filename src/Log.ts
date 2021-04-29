@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
 
+export type VSCodeLogger = Logger<vscode.OutputChannel>;
+
 export interface Logger<C> {
   error(msg: string): void;
   debug(msg: string): void;

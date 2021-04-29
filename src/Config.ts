@@ -7,7 +7,7 @@ export interface Config {
   id: string,
   name: string,
   port: number,
-  root: string,
+  include: string,
   command: string,
   debug: boolean,
 };
@@ -25,7 +25,7 @@ export const fromEntry = (): Config => {
     id: ID,
     name: NAME,
     port: (conf.get('port') as number),
-    root: (conf.get('root') as string),
+    include: (conf.get('include') as string),
     command: (conf.get('executable') as string),
     debug: (conf.get('debug') as boolean),
   };
