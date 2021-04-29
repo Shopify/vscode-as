@@ -33,7 +33,7 @@ const configure = async (extension: TSExtension, config: Config.Config): Promise
   const api = features.getAPI(0);
   if (api) {
     api.configurePlugin(ID, {
-      glob: config.include,
+      'include': config.include,
       rootPath: vscode.workspace.rootPath,
     });
     return Just(api);
