@@ -40,8 +40,8 @@
         },
         "asls.include": {
           "description": "AssemblyScript sources to analyze",
-          "type": "string",
-          "default": "assembly/**/*.ts"
+          "type": "array",
+          "default": ["assembly/**/*.ts", "assembly/*.ts"]
         },
         "asls.port": {
           "description": "Port in which the language server will be listening",

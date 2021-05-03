@@ -2,7 +2,7 @@ import * as ts from 'typescript/lib/tsserverlibrary';
 import * as mm from 'minimatch';
 import * as path from 'path';
 
-let DEFAULT_CONFIG = { include: "assembly/**/*.ts", rootPath: '' };
+let DEFAULT_CONFIG = { include: ["assembly/**/*.ts", "assembly/*.ts"], rootPath: '' };
 let PROJECT: ts.server.Project | null = null;
 
 const create = ({ languageService, project }: ts.server.PluginCreateInfo): ts.LanguageService => {
@@ -28,7 +28,9 @@ const init = (): ts.server.PluginModule => ({
 
 const filter = (service: ts.LanguageService, key: keyof ts.LanguageService) => (filename: string) => {
   const relative = path.relative(DEFAULT_CONFIG.rootPath, filename);
-  if (mm(relative, DEFAULT_CONFIG.include)) {
+  const match = DEFAULT_CONFIG.include.some((i) => mm(relative, i));
+
+  if (match) {
     return [];
   }
   return (service as any)[key](filename);
