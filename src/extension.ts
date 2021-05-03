@@ -61,4 +61,4 @@ export function deactivate() {}
 
 
 export const watchers = () =>
-  config.include.map(i => vscode.workspace.createFileSystemWatcher(i))
+  config.include.map(i => vscode.workspace.createFileSystemWatcher(i));

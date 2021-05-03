@@ -25,7 +25,7 @@ export const fromEntry = (): Config => {
     id: ID,
     name: NAME,
     port: (conf.get('port') as number),
-    include: (conf.get('include') as [string]),
+    include: (conf.get('include') as string[]),
     command: (conf.get('executable') as string),
     debug: (conf.get('debug') as boolean),
   };
