@@ -32,20 +32,14 @@ export function activate(context: vscode.ExtensionContext) {
     diagnosticCollectionName: config.id,
     synchronize: {
       configurationSection: config.id,
-      fileEvents: [
-        vscode.workspace.createFileSystemWatcher(
-          new vscode.RelativePattern(
-            vscode.workspace.workspaceFolders![0],
-            config.include,
-          )
-        )
-      ],
+      fileEvents: watchers(),
     },
   };
 
   logger.debug('Client started');
   context.subscriptions.push(
-    new LanguageClient(config.id, config.name, run(context, Config.toArgs(config)), clientOptions).start()
+    new LanguageClient(config.id, config.name, run(context, Config.toArgs(config)), clientOptions)
+    .start()
   );
 }
 
@@ -64,3 +58,7 @@ const run = (context: vscode.ExtensionContext, args: string[]): ServerOptions =>
     }));
 
 export function deactivate() {}
+
+
+export const watchers = () =>
+  config.include.map(i => vscode.workspace.createFileSystemWatcher(i))
