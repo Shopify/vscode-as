@@ -9,7 +9,7 @@
     "theme": "dark"
   },
   "engines": {
-    "vscode": "^1.47.3"
+    "vscode": "^1.53.0"
   },
   "activationEvents": [
     "onLanguage:typescript",
@@ -38,10 +38,13 @@
           "default": "on",
           "description": "Traces the communication between VSCode and the AssemblyScript language server"
         },
-        "asls.root": {
-          "description": "Directory to be considered as the root of the AssemblyScript sources",
-          "type": "string",
-          "default": "assembly/**/*.{as,ts}"
+        "asls.include": {
+          "description": "AssemblyScript sources to analyze",
+          "type": "array",
+          "default": [
+            "assembly/**/*.ts",
+            "assembly/*.ts"
+          ]
         },
         "asls.port": {
           "description": "Port in which the language server will be listening",
@@ -79,13 +82,19 @@
         "scopeName": "source.as",
         "path": "./syntaxes/assemblyscript.json"
       }
+    ],
+    "typescriptServerPlugins": [
+      {
+        "name": "asts",
+        "enableForWorkspaceTypeScriptVersions": true
+      }
     ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
-    "compile": "tsc -p ./",
+    "compile": "tsc -b",
     "lint": "eslint src --ext ts",
-    "watch": "tsc -watch -p ./",
+    "watch": "tsc -b -w",
     "test": "jest"
   },
   "devDependencies": {
@@ -94,22 +103,23 @@
     "@types/glob": "^7.1.3",
     "@types/jest": "^26.0.13",
     "@types/node": "^13.13.15",
-    "@types/vscode": "^1.47.0",
+    "@types/vscode": "^1.53.0",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",
+    "@types/semver": "^7.3.3",
+    "@types/shelljs": "^0.8.8",
     "eslint": "^6.8.0",
     "glob": "^7.1.6",
     "jest": "^26.4.2",
-    "typescript": "^3.9.7",
+    "typescript": "^4.1.5",
     "vscode-test": "^1.3.0"
   },
   "dependencies": {
-    "@types/semver": "^7.3.3",
-    "@types/shelljs": "^0.8.8",
+    "asts": "./asts",
     "cross-spawn": "^7.0.3",
     "purify-ts": "^0.16.0-beta.5",
     "semver": "^7.3.2",
     "shelljs": "^0.8.4",
-    "vscode-languageclient": "^6.1.3"
+    "vscode-languageclient": "^7.0.0"
   }
 }

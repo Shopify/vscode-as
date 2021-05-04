@@ -2,6 +2,7 @@
 	"compilerOptions": {
 		"module": "commonjs",
 		"target": "es6",
+    "composite": true,
 		"outDir": "out",
     "rootDir": "src",
 		"lib": [
@@ -14,10 +15,6 @@
     "src"
   ],
 	"exclude": [
-		"node_modules",
-		".vscode-test"
-	],
-  "references": [{
-    "path": "./asts"
-  }]
+		"node_modules"
+	]
 }

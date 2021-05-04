@@ -7,7 +7,7 @@ describe('toPortArgs', () => {
       id: 'asls',
       name: 'AssemblyScript Language Server',
       port: 10,
-      root: '',
+      include: [''],
       command: '',
       debug: false,
     };
@@ -20,7 +20,7 @@ describe('toPortArgs', () => {
       id: 'asls',
       name: 'AssemblyScript Language Server',
       port: 10,
-      root: '',
+      include: [''],
       command: '',
       debug: true,
     };
