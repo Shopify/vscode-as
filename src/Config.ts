@@ -8,7 +8,6 @@ export interface Config {
   name: string,
   port: number,
   include: string[],
-  command: string,
   debug: boolean,
 };
 
@@ -26,7 +25,6 @@ export const fromEntry = (): Config => {
     name: NAME,
     port: (conf.get('port') as number),
     include: (conf.get('include') as string[]),
-    command: (conf.get('executable') as string),
     debug: (conf.get('debug') as boolean),
   };
 };
@@ -40,9 +38,10 @@ export const fromEntry = (): Config => {
  * @returns string[]
  */
 export const toArgs = (cfg: Config) => {
+
   if (cfg.debug) {
-    return ['-p', cfg.port.toString(), '-d'];
+    return ['eval', `"AssemblyScriptLS.CLI.start_with_options([port: ${cfg.port}, debug: true])"`]
   }
 
-  return ['-p', cfg.port.toString()];
+  return ['eval', `"AssemblyScriptLS.CLI.start_with_options([port: ${cfg.port}])"`];
 };

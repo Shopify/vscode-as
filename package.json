@@ -51,11 +51,6 @@
           "type": "number",
           "default": 0
         },
-        "asls.executable": {
-          "description": "The language server executable",
-          "type": "string",
-          "default": "asls"
-        },
         "asls.debug": {
           "description": "Start the language server in debug mode",
           "type": "boolean",
