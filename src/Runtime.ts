@@ -24,4 +24,4 @@ const ensureServer = (context: vscode.ExtensionContext): Either<string, string> 
  */
 export const ensure = (context: vscode.ExtensionContext): EitherAsync<string, string> =>
   EitherAsync
-    .liftEither(ensureServer(context))
+    .liftEither(ensureServer(context));

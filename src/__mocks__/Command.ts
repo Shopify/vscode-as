@@ -1,3 +1,3 @@
-import {Nothing} from "purify-ts/Maybe";
+import { Nothing } from "purify-ts/Maybe";
 
 export const fromContext = jest.fn().mockReturnValue(Nothing);

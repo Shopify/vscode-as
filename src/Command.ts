@@ -27,7 +27,7 @@ export const fromContext = (ctx: vscode.ExtensionContext): Maybe<Command> => {
     case vscode.ExtensionMode.Development:
       return Maybe
         .of(ctx.asAbsolutePath(DEV_CMD))
-        .map(cmd => cmd.toString())
+        .map(cmd => cmd.toString());
     default:
       return fallback;
   }
@@ -42,8 +42,8 @@ const resolvePlatformBinary = (ctx: vscode.ExtensionContext) => {
     default:
       return null;
   }
-}
+};
 
 function platform () {
-  return process.platform
+  return process.platform;
 }

@@ -40,7 +40,7 @@ export const fromEntry = (): Config => {
 export const toArgs = (cfg: Config) => {
 
   if (cfg.debug) {
-    return ['eval', `"AssemblyScriptLS.CLI.start_with_options([port: ${cfg.port}, debug: true])"`]
+    return ['eval', `"AssemblyScriptLS.CLI.start_with_options([port: ${cfg.port}, debug: true])"`];
   }
 
   return ['eval', `"AssemblyScriptLS.CLI.start_with_options([port: ${cfg.port}])"`];
