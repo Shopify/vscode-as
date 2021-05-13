@@ -45,7 +45,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 const run = (context: vscode.ExtensionContext, args: string[]): ServerOptions => () => new Promise((resolve,  _reject) =>
-  Runtime.ensure(config.command, context)
+  Runtime.ensure(context)
     .chain(cmd => Server.start({ command: cmd, logger }, args))
     .chain(sock => EitherAsync(async () => resolve({
       writer: sock,
