@@ -8,11 +8,10 @@ describe('toPortArgs', () => {
       name: 'AssemblyScript Language Server',
       port: 10,
       include: [''],
-      command: '',
       debug: false,
     };
     const result = Config.toArgs(config);
-    expect(result).toEqual(['-p', '10']);
+    expect(result).toEqual(['eval', `"AssemblyScriptLS.CLI.start_with_options([port: 10])"`]);
   });
 
   test("returns [-p, $PORT, -d] from the given config", () => {
@@ -21,10 +20,9 @@ describe('toPortArgs', () => {
       name: 'AssemblyScript Language Server',
       port: 10,
       include: [''],
-      command: '',
       debug: true,
     };
     const result = Config.toArgs(config);
-    expect(result).toEqual(['-p', '10', '-d']);
+    expect(result).toEqual(['eval', `"AssemblyScriptLS.CLI.start_with_options([port: 10, debug: true])"`]);
   });
 });
