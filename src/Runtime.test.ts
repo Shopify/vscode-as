@@ -10,7 +10,7 @@ describe('Runtime', () => {
         expect(either.isLeft()).toBe(true);
         expect(either.extract().replace(/ /g, '')).toEqual(`
         The AssemblyScript Language Server not found for platform: ${process.platform}.
-        The supported platforms are: MacOS and Linux x86_64
+        The supported platforms are: MacOS x64 and Linux x64
         If you're on Windows try starting the VSCode Extension from VScode
         Windows Subsystem for Linux (WSL)
           `.replace(/ /g, ''));

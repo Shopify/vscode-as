@@ -16,8 +16,11 @@ describe('Command', () => {
   describe('fromContext (development mode)', () => {
     it('defaults to the symlinked local server path', () => {
       const result = Command.fromContext((context as any));
-      expect(result.isJust()).toBe(true);
-      expect(result.unsafeCoerce()).toBe('./asls');
+      expect.assertions(2);
+      return result.run().then(maybe => {
+        expect(maybe.isJust()).toBe(true);
+        expect(maybe.unsafeCoerce()).toBe('./asls');
+      });
     });
   });
 
@@ -29,23 +32,32 @@ describe('Command', () => {
     it('resolves the right binary path for mac', () => {
       setPlatform('darwin');
       const result = Command.fromContext((context as any));
-      expect(result.isJust()).toBe(true);
-      expect(result.unsafeCoerce()).toBe('./bin/mac/bin/asls');
+      expect.assertions(2);
+      return result.run().then(maybe => {
+        expect(maybe.unsafeCoerce()).toBe('./bin/asls/bin/asls');
+        expect(maybe.isJust()).toBe(true);
+      });
     });
 
 
-    it('resolves the right binary path for mac', () => {
+    it('resolves the right binary path for linux', () => {
       setPlatform('linux');
       const result = Command.fromContext((context as any));
-      expect(result.isJust()).toBe(true);
-      expect(result.unsafeCoerce()).toBe('./bin/linux_x86_64/bin/asls');
+      expect.assertions(2);
+      return result.run().then(maybe => {
+        expect(maybe.isJust()).toBe(true);
+        expect(maybe.unsafeCoerce()).toBe('./bin/asls/bin/asls');
+      });
     });
 
     it('returns Nothing if the specified command cannot be resolved', () => {
       setPlatform('foo');
       const result = Command.fromContext((context as any));
-      expect(result.isNothing()).toBe(true);
-      expect(result.extractNullable()).toBeNull();
+      expect.assertions(2);
+      return result.run().then(maybe => {
+        expect(maybe.isNothing()).toBe(true);
+        expect(maybe.extractNullable()).toBeNull();
+      });
     });
   });
 });
