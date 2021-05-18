@@ -3,7 +3,7 @@ import { Maybe, Nothing } from 'purify-ts/Maybe';
 import * as os from 'os';
 import * as fs from 'fs';
 import * as tar from 'tar';
-import {MaybeAsync} from 'purify-ts/MaybeAsync';
+import { MaybeAsync } from 'purify-ts/MaybeAsync';
 
 export type Command = string;
 const DEV_CMD = 'asls';
@@ -49,7 +49,7 @@ const verifyPlatform = (): Maybe<string> => {
     return Maybe.of(p);
   }
   return Nothing;
-}
+};
 
 const resolvePlatformBinary = async (platform: string, ctx: vscode.ExtensionContext): Promise<Maybe<string>> => new Promise((resolve, reject) => {
   const platformName = platform == 'linux' ? 'linux_x86_64' : platform;
