@@ -52,7 +52,7 @@ const verifyPlatform = (): Maybe<string> => {
 };
 
 const resolvePlatformBinary = async (platform: string, ctx: vscode.ExtensionContext): Promise<Maybe<string>> => new Promise((resolve, reject) => {
-  const platformName = platform == 'linux' ? 'linux_x86_64' : platform;
+  const platformName = platform === 'linux' ? 'linux_x86_64' : platform;
   const tarballPath = ctx.asAbsolutePath(`bin/asls-${platformName}.tar.gz`);
   const binaryPath = ctx.asAbsolutePath(`bin/asls/bin/asls`);
   const binaryBase = ctx.asAbsolutePath('bin/');
