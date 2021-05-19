@@ -8,7 +8,7 @@ VSCode Language Client for AssemblyScript
 ## Requirements
 
 - AssemblyScript 0.10.0+
-- A global installation of the [AsseblyScript Language Server](https://github.com/saulecabrera/asls)
+- A global installation of the [AssemblyScript Language Server](https://github.com/saulecabrera/asls)
 
 ## Usage
 
