@@ -54,7 +54,7 @@ const run = (context: vscode.ExtensionContext, args: string[]): ServerOptions =>
     .chain(() => Plugin.activate(config))
     .run().then((either) => {
       either
-        .ifLeft(e => logger.error(e));
+        .ifLeft(e => logger.error(e as string));
     }));
 
 export function deactivate() {}
