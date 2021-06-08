@@ -8,77 +8,70 @@ VSCode Language Client for AssemblyScript
 ## Requirements
 
 - AssemblyScript 0.10.0+
-- A global installation of the [AssemblyScript Language Server](https://github.com/saulecabrera/asls)
+
 
 ## Usage
 
-To install the AssemblyScript Language Server make sure you follow the [installation instructions](https://github.com/saulecabrera/asls#installation).
+- Install the extension from the VSCode Marketplace.
+- The extension support Linux, Mac and Windows via WSL.
 
-The AssemblyScript compiler supports parametrized source file extensions, this means that as long as
-all your source files have the same extension you can instruct the compiler to use it.
+By default the language server will report diagnostics for files located under
+the `assembly/` directory. The configuration can be changed under the extension
+settings to include other files.
 
-This plugin accepts either `as` or `ts` as file extensions.
+The default configuration values are:
 
-#### When using .ts
+```json
+"asls.include": {
+  "description": "AssemblyScript sources to analyze",
+  "type": "array",
+  "default": [
+    "assembly/**/*.ts",
+    "assembly/*.ts"
+  ]
+},
+"asls.port": {
+  "description": "Port in which the language server will be listening",
+  "type": "number",
+  "default": 0
+},
+"asls.debug": {
+  "description": "Start the language server in debug mode",
+  "type": "boolean",
+  "default": false
+}
 
-- Make sure to rename all file extensions to `ts`
-- Make sure to have an npm script named `asbuild` in your project's `package.json` that performs the compilation process
-- In your project's directory root make sure to include the following vscode settings:
-
-  ```json
-  # in .vscode/settings.json
-  {
-    "typescript.validate.enable": false
-  }
-  ```
-
-  This will disable the typescript language server in your AS project avoiding
-  conflicts between the two plugins.
-
-#### When using .as
-
-- Make sure to rename all file extensions to `as`
-- Make sure to have an npm script named `asbuild` in your project's `package.json` that performs the compilation process
-
-Note: using an extension different than `ts` might cause weird behaviors when using third party libraries that don't use the
-same file extension.
-
-## Troubleshooting
-
-- Some versions of the this extension will require a minimum language server server version,
-  please make sure your language server version is compliant. 
-
-- Versions 0.3.0 to 0.3.2 _do not work_. Please update to a version that's equal or greater to 0.3.3
+```
 
 ## Development
 
 If you want to develop the extension using a development version of the language
 server, you need to:
 
-1. Symlink the language server binary into this directory `ln -s
-   path/to/language/server/bin/asls asls`
+1. Build the langue server binary (`mix release`)
+2. Symlink the language server binary into this directory `ln -s
+   path/to/language/server/asls/_build/dev/rel/asls/bin/asls asls`
 
-2. Run `npm install` and `npm run compile`
+3. Run `npm install` and `npm run compile`
 
-3. Make sure to have Erlang 22+ installed, if you're using nix you can do so by
+4. Make sure to have Erlang 22+ installed, if you're using nix you can do so by
    running `nix-env -iA nixpkgs.erlang`
 
-4. Under the debug section in VSCode click on `Run extension`
+5. Under the debug section in VSCode click on `Run extension`
 
-5. Once the extension is runing, in VSCode's output console, verify that the
+6. Once the extension is runing, in VSCode's output console, verify that the
    logs specify that the language server was started from the relative symlink,
    it looks something like:
 
    ```
    Starting the AssemblyScript Language Server from: /path/to/extension/vscode-as/asls
    ```
+## To release a new version
 
-If you want to develop the extension using a global installation of the
-language server, the steps are almost the same, except that you can skip step
-1; and in step 5 instead of verifying that the language server is started from
-the relative symlink, ensure that it is started from the global installation
-path.
+1. Bump the version in the `package.json`
+2. Package the extension by running `yarn && npx vsce package --yarn`
+3. Test the packaged extension by running `code --install-extension ./asls-x.x.x.vsix`
+4. Publish via `npx vsce publish`
+5. Publish to open-vsx via `npx ovsx publish ./asls-x.x.x.vsix -p <token>`
 
-It's important to note that if the extension is in development mode and in the case that both the symlink and the global
-installation are present, the symlink will take precedence over the global
-installation.
+

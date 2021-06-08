@@ -4,9 +4,18 @@ All notable changes to the "vscode-as" extension will be documented in this file
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [Unreleased]
+## [0.4.0]
+
+### Added
 
 - [Runtime] - Improve unmet dependencies error
+- [Extension] - Add a TS plugin to automatically detect AS sources
+- [Server binary] - Bundle server for darwin and linux
+
+### Deprecated
+
+- [Setup] - No need to disable TS validation manually
+
 
 ## [0.3.3] - 2020-09-15
 
