@@ -59,7 +59,7 @@ server, you need to:
 
 5. Under the debug section in VSCode click on `Run extension`
 
-6. Once the extension is runing, in VSCode's output console, verify that the
+6. Once the extension is running, in VSCode's output console, verify that the
    logs specify that the language server was started from the relative symlink,
    it looks something like:
 
