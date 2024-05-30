@@ -13,7 +13,7 @@
     "vscode": "^1.53.0"
   },
   "dependencies": {
-    "minimatch": "^3.0.4"
+    "minimatch": "^3.0.5"
   },
   "devDependencies": {
     "@types/minimatch": "^3.0.4",
